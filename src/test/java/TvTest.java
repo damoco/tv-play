@@ -10,7 +10,7 @@ class TvTest {
 
 	@BeforeEach
 	void setup() {
-		tv = new Tv();
+		tv = new Tv(50);
 		assertFalse(tv.isOn());
 		tv.on();
 		assertTrue(tv.isOn());
@@ -28,12 +28,26 @@ class TvTest {
 		tv.hibernate();
 		assertTrue(tv.isOn());
 		assertTrue(tv.isHibernating());
-		tv.weakup();
+		tv.wakeup();
 		assertTrue(tv.isOn());
 		assertFalse(tv.isHibernating());
 		tv.hibernate();
 		tv.off();
 		assertFalse(tv.isHibernating());
 		assertFalse(tv.isOn());
+	}
+
+	@Test
+	void playAd() throws InterruptedException {
+		assertAdPlaying();
+		tv.hibernate();
+		tv.wakeup();
+		assertAdPlaying();
+	}
+
+	private void assertAdPlaying() throws InterruptedException {
+		assertTrue(tv.isAdPlaying());
+		Thread.sleep(100);
+		assertFalse(tv.isAdPlaying());
 	}
 }
